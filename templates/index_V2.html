@@ -1,0 +1,132 @@
+<html>
+<head>
+    <!--<link rel="stylesheet" href="css/mdui.min.css">
+    <script src="js/mdui.min.js"></script> -->
+	<script src="../static/js/vue.js"></script>
+	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/mdui/0.4.3/css/mdui.min.css">
+    <script src="https://cdnjs.loli.net/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+	
+</head>
+
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-appbar-with-toolbar">
+    <header class="mdui-appbar mdui-appbar-fixed">
+        <div class="mdui-toolbar mdui-color-theme">
+
+            <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#main-drawer', swipe: true}">
+                <i class="mdui-icon material-icons">menu</i>
+            </span>
+           <span class="mdui-typo-title">物联网云平台</span>  
+        </div>       
+    </header>
+    <div class="mdui-drawer mdui-drawer-close mdui-text-color-black-text" id="main-drawer">
+        <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+          <div class="mdui-collapse-item mdui-collapse-item-open">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">near_me</i>
+                <div class="mdui-list-item-content">开始使用</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>       
+                <div class="mdui-collapse-item-body mdui-list" style="height: auto;">
+                    <a href="./down
+                    load" class="mdui-list-item mdui-ripple ">目录</a>
+                </div>
+                
+            </div> 
+
+        </div>
+    </div>
+
+    <div class="mdui-tab " mdui-tab>
+        <a href="#edit" class="mdui-ripple">编辑</a>
+        <!-- s -->
+    </div>
+
+    <div class="mdui-container-fluid">
+		
+        <div id="edit" class="mdui-p-a-2">      
+		  {% raw %}
+                <div class="mdui-table-fluid" id="app">
+                    <table class="mdui-table mdui-table-hoverable">
+                        <thead>
+                            <tr>
+                            <th>#</th>
+                            <th>姓名</th>
+                            <th>RFID</th>
+                            <th>状态</th>
+                            <th>时间</th>
+                            <th>编辑</th>
+                            </tr>
+                        </thead>
+                        <tbody v-for="(item,index) in msgs">
+							<tr>
+								<td>{{ index+1 }}</td>
+								<td>{{item.name}}</td>
+								<td>{{item.Rfid}}</td>
+								<td>{{item.state}}</td>
+                                <td>{{item.time}}</td>
+                                <td>  
+                                    <button class="mdui-btn mdui-ripple mdui-btn-icon" v-bind:mdui-dialog="getarget(item.Rfid)">
+                                        <i class="mdui-icon material-icons">edit</i>
+                                    </button>
+                                    <div class="mdui-dialog" v-bind:id="item.Rfid">
+                                        <div class="mdui-dialog-title">是否归还,id= {{item.Rfid}} </div>
+                                        <div class="mdui-dialog-content">归还后则无法再次修改</div>
+                                        <div class="mdui-dialog-actions mdui-dialog-actions-stacked">
+                                            <a href="aaa.com"><button mdui-dialog-confirm class="mdui-btn mdui-ripple">确认</button></a>
+                                            <button class="mdui-btn mdui-ripple" mdui-dialog-close>关闭</button>
+                                        </div>
+                                    </div>                                   
+                                </td>
+                            </tr>
+                        </tbody>
+                </table>
+				<!-- <input type="button" @click="get()" value="Get"> -->
+                </div>
+			{% endraw %}
+        </div>
+
+        <!-- <div id="tab3" class="mdui-p-a-2">3images content</div>
+        <div id="tab4" class="mdui-p-a-2">4images content</div> -->
+    </div>
+	<script>
+	    const app = new Vue({
+	        el: '#app',
+	        data: {
+					msgs:[],
+                    rfid:'',
+	        },
+			mounted() {
+                this.get()
+                if (this.timer){
+                    clearInterval(this.timer);
+                }else{
+                    this.timer=setInterval(()=>{
+                        this.get();
+                    },4000);
+                }
+                },           
+            destroyed(){
+                clearInterval(this.timer);
+            },
+	        methods:{
+	            get:function(){
+	                //发送get请求
+	                this.$http.get('../ajax/get').then(function(res){
+	                    this.msgs=res.body.message 
+						// console.log(res.body.message);
+	                },function(){
+	                    // console.log(res.status);
+	                });
+
+	            },
+                getarget:function(rfid){
+                    return "{target:'#"+rfid+"'}";
+                },
+	        },
+	    });
+	</script>
+</body>
+</html>

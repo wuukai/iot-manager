@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>对话框 - 竖排按钮</title>
+  <link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/mdui/0.4.3/css/mdui.min.css">
+    <script src="https://cdnjs.loli.net/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
+</head>
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
+
+
+ <button class="mdui-btn mdui-ripple mdui-btn-icon" mdui-dialog="{target: '#{{abc}}' }" >
+     <i class="mdui-icon material-icons">edit</i>
+</button>
+
+  <div class="mdui-dialog" id="{{abc}}">
+        <div class="mdui-dialog-title">是否归还,id= {{abc}} </div>
+        <div class="mdui-dialog-content">归还后则无法再次修改</div>
+        <div class="mdui-dialog-actions mdui-dialog-actions-stacked">
+            <a href="aaa{{abc}}.com"><button class="mdui-btn mdui-ripple">确认</button></a>
+            <button class="mdui-btn mdui-ripple" mdui-dialog-close>关闭</button>
+        </div>
+  </div>
+</div>
+
+
+</body>
+</html>
